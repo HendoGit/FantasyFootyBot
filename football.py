@@ -31,6 +31,16 @@ def get_detailed_player_info(player_id):
     future = json['fixtures']
     return history, future
 
+def get_my_team(manager_id):
+    url = f'https://fantasy.premierleague.com/api/my-team/{manager_id}/'
+    r = requests.get(url)
+    json = r.json()
+
+    return json
+
+alex_manager_id = '4186534'
+
+
 
 fixtures = get_fixtures()
 teams = get_teams()
@@ -38,22 +48,34 @@ players = get_players()
 
 player_history, player_fixtures = get_detailed_player_info(5)
 
+my_team = get_my_team(alex_manager_id)
+
 names = [i['name'] for i in teams]
 
-import pandas as pd
-df = pd.DataFrame({'names':names})
+session = requests.session()
 
-from sqlalchemy import create_engine
+def get_pwd():
 
-import json
+    with open('credentials.json') as f:
+      credentials = json.load(f)
 
-with open('credentials.json') as f:
-  credentials = json.load(f)
 
-end_point = 'alex-aicore.c36j3dhgfor3.eu-west-2.rds.amazonaws.com'
-port = '5432'
-db_identifier = 'postgres'
-database_connection = create_engine(f'postgresql://postgres:{credentials["password"]}@{end_point}/{db_identifier}').connect()
+    return credentials["fantasy_pwd"]
 
-df.to_sql(con=database_connection, name="LEAGUE_TABLE", if_exists='replace',chunksize=100, index=False)
+def log_in():
+    url = 'https://users.premierleague.com/accounts/login/'
+    pwd = get_pwd()
+    payload = {
+     'password': pwd,
+     'login': 'alexhenderson270@hotmail.com',
+     'redirect_uri': 'https://fantasy.premierleague.com/a/login',
+     'app': 'plfpl-web'
+    }
+    session = requests.session()
+    session.post(url, data=payload)
+    response = session.get(f'https://fantasy.premierleague.com/drf/my-team/{alex_manager_id}/')
+    json = response.json()
+    return json
 
+
+my_team=log_in()
