@@ -57,7 +57,7 @@ session = requests.session()
 
 def get_pwd():
 
-    with open('credentials.json') as f:
+    with open('../credentials.json') as f:
       credentials = json.load(f)
 
 
