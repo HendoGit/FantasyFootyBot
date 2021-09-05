@@ -1,4 +1,5 @@
 import requests
+import json
 import pandas as pd
 import numpy as np
 
@@ -73,9 +74,11 @@ def log_in():
     }
     session = requests.session()
     session.post(url, data=payload)
-    response = session.get(f'https://fantasy.premierleague.com/drf/my-team/{alex_manager_id}/')
+    response = session.get(f'https://fantasy.premierleague.com/api/my-team/{alex_manager_id}/')
     json = response.json()
+
     return json
 
 
 my_team=log_in()
+
