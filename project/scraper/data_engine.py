@@ -5,8 +5,6 @@ import json
 class FPL_Engine:
     def __init__(self, credentials):
         self.credentials = credentials
-        self.fixtures = get_fixtures()
-        self.players = get_players()
 
     def get_fixtures():
         url = credentials["fixtures_url"]
