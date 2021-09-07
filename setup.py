@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='fantasy_football_engine',
+    name='fpl-engine',
     version='0.0.1',
     description='Package to pull fantasy football data and run your account',
     url='https://github.com/HendoGit/FantasyFootyBot.git',

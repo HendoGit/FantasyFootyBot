@@ -1,6 +1,6 @@
 import json
 
-from project.scraper.data_engine import FPL_Engine
+from project.engine.data_engine import FPL_Engine
 
 with open('credentials.json') as f:
   credentials = json.load(f)
