@@ -7,6 +7,6 @@ with open('credentials.json') as f:
 
 engine = FPL_Engine(credentials)
 
-teams = engine.get_teams()
+teams = engine.manager_fpl_data()
 
 print(teams)

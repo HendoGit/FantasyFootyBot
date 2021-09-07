@@ -48,7 +48,7 @@ class FPL_Engine:
         }
         session = requests.session()
         session.post(url, data=payload)
-        my_team_url = credentials["my_team_url"] + credentials["manager_id"] + '/'
+        my_team_url = self.credentials["my_team_url"] + self.credentials["manager_id"] + '/'
         response = session.get(my_team_url)
         json = response.json()
         return json
