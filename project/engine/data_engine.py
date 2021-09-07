@@ -5,7 +5,7 @@ import json
 class FPL_Engine:
     def __init__(self, credentials):
         self.credentials = credentials
-        self.teams = self.get_teams()
+
 
     def get_fixtures(self):
         url = self.credentials["fixtures_url"]
@@ -18,6 +18,7 @@ class FPL_Engine:
         r = requests.get(url)
         json = r.json()
         teams = json['teams']
+        self.teams = teams
         return teams
 
     def get_players(self):
