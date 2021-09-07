@@ -1,9 +1,13 @@
 from setuptools import setup, find_packages
 
+with open("README.md", "r", encoding="utf-8") as fh:
+    long_description = fh.read()
+
 setup(
-    name='fpl-engine',
+    name='fpl_engine',
     version='0.0.1',
     description='Package to pull fantasy football data and run your account',
+    long_description=long_description,
     url='https://github.com/HendoGit/FantasyFootyBot.git',
     author='Alex Henderson',
     license='Apache',
