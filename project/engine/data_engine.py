@@ -36,7 +36,7 @@ class FPL_Engine:
 
     def manager_fpl_data(self):
         url = self.credentials["login_url"]
-        pwd = self.credentials["password"]
+        pwd = self.credentials["fantasy_pwd"]
         email = self.credentials["email"]
         redirect_uri = self.credentials["redirect_uri"]
         app_name = self.credentials["app_name"]
