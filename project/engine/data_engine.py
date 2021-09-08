@@ -5,7 +5,11 @@ import json
 class FPL_Engine:
     def __init__(self, credentials):
         self.credentials = credentials
-
+        self.teams = self.get_teams()
+        self.fixtures = self.get_fixtures()
+        self.players = self.get_players()
+        self.my_data = self.manager_fpl_data()
+        self.data = {}
 
     def get_fixtures(self):
         url = self.credentials["fixtures_url"]
@@ -26,6 +30,13 @@ class FPL_Engine:
         r = requests.get(url)
         json = r.json()
         players = json['elements']
+        players_refactor = {}
+        for card in players:
+            players_refactor[card['id']] = {i:card[i] for i in card if i!='id'}
+
+        return players_refactor
+
+
         return players
 
     def get_detailed_player_info(self, player_id):
@@ -54,5 +65,11 @@ class FPL_Engine:
         response = session.get(my_team_url)
         json = response.json()
         return json
+
+    def build_team(self):
+        for card in self.my_data['picks']:
+            element = card['element']
+
+
 
 
