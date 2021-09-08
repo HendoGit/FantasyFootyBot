@@ -1,6 +1,6 @@
 import requests
 import json
-
+from collections import defaultdict
 
 class FPL_Engine:
     def __init__(self, credentials):
@@ -10,6 +10,8 @@ class FPL_Engine:
         self.players = self.get_players()
         self.my_data = self.manager_fpl_data()
         self.data = {}
+        self.element_types = self.get_element_types()
+        self.starting_lineup, self.bench = self.build_team()
 
     def get_fixtures(self):
         url = self.credentials["fixtures_url"]
@@ -39,6 +41,16 @@ class FPL_Engine:
 
         return players
 
+    def get_element_types(self):
+        url = self.credentials["players_url"]
+        r = requests.get(url)
+        json = r.json()
+        types = json['element_types']
+        types_refactor = {}
+        for card in types:
+            types_refactor[card['id']] = {i:card[i] for i in card if i!='id'}
+        return types_refactor
+
     def get_detailed_player_info(self, player_id):
         url = f'https://fantasy.premierleague.com/api/element-summary/{player_id}/'
         r = requests.get(url)
@@ -67,8 +79,33 @@ class FPL_Engine:
         return json
 
     def build_team(self):
+        starting_lineup = []
+        bench = []
         for card in self.my_data['picks']:
             element = card['element']
+            player = self.players[element]
+            position = player['element_type']
+            position_str = self.element_types[position]['singular_name_short']
+            first_name = player['first_name']
+            last_name = player['second_name']
+
+            if card['position'] < 12:
+                starting_lineup.append([first_name, last_name, position_str])
+            else:
+                bench.append([first_name, last_name, position_str])
+
+        return starting_lineup, bench
+
+    def display_team(self):
+        team = {"GKP":" ", "DEF":" ", "MID":" ", "FWD":" "}
+        for player in self.starting_lineup:
+            team[player[2]] += "-".join(player) + "  "
+        print(team["GKP"].center(120), '\n\n')
+        print(team["DEF"].center(120), '\n\n')
+        print(team["MID"].center(120), '\n\n')
+        print(team["FWD"].center(120))
+
+
 
 
 

@@ -11,6 +11,9 @@ engine = FPL_Engine(credentials)
 
 
 
+import project.engine.data_engine
+from importlib import reload
 
+reload(project.engine.data_engine)
 
 
