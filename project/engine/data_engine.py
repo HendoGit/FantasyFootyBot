@@ -12,6 +12,7 @@ class FPL_Engine:
         self.data = {}
         self.element_types = self.get_element_types()
         self.starting_lineup, self.bench = self.build_team()
+        self.bank = self.my_data['transfers']['bank']
 
     def get_fixtures(self):
         url = self.credentials["fixtures_url"]
@@ -81,6 +82,7 @@ class FPL_Engine:
     def build_team(self):
         starting_lineup = []
         bench = []
+        print(self.my_data)
         for card in self.my_data['picks']:
             element = card['element']
             player = self.players[element]
@@ -88,18 +90,21 @@ class FPL_Engine:
             position_str = self.element_types[position]['singular_name_short']
             first_name = player['first_name']
             last_name = player['second_name']
+            selling_price = card['selling_price']
 
             if card['position'] < 12:
-                starting_lineup.append([first_name, last_name, position_str])
+                starting_lineup.append([first_name, last_name, position_str, selling_price])
             else:
-                bench.append([first_name, last_name, position_str])
+                bench.append([first_name, last_name, position_str, selling_price])
 
         return starting_lineup, bench
+
+
 
     def display_team(self):
         team = {"GKP":" ", "DEF":" ", "MID":" ", "FWD":" "}
         for player in self.starting_lineup:
-            team[player[2]] += "-".join(player) + "  "
+            team[player[2]] += "-".join(player[:3]) + "  "
         print(team["GKP"].center(120), '\n\n')
         print(team["DEF"].center(120), '\n\n')
         print(team["MID"].center(120), '\n\n')

@@ -7,7 +7,7 @@ with open('credentials.json') as f:
 
 engine = FPL_Engine(credentials)
 
-
+engine.display_team()
 
 
 
